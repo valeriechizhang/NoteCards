@@ -20,6 +20,10 @@ for n in notebooks:
     session.delete(n)
     session.commit()
 
+users = session.query(User).all()
+for u in users:
+    session.delete(u)
+    session.commit()
 
 
 # Dummy user

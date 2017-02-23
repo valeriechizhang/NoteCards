@@ -258,6 +258,14 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['email'] = data['email']
 
+    user_id = getUserID(data['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
+    print login_session['user_id']
+    print login_session['username']
+
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return 'soething'
@@ -283,6 +291,7 @@ def gdisconnect():
         del login_session['gplus_id']
         del login_session['username']
         del login_session['email']
+        del login_session['user_id']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
