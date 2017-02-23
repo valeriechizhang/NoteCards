@@ -6,12 +6,17 @@
     </div>
 
     <div class='greeting'>
-        You are now logged in as <b>{{session['username']}}</b>
+        {% if not session['email'] %}
+            You are not logged in.
+        {% else %}
+            You are now logged in as <b>{{session['email']}}</b><br>
+            You are {{session['username']}}
+        {% endif %}
     </div>
 
     <div class='row log'>
-    {% if session['username'] == None %}
-        <a href='{{url_for('login')}}'>login</a>
+    {% if not session['email'] %}
+        <a href='{{url_for('showLogin')}}'>login</a>
     {% else %}
         <a href='#'>Logout</a>
     {% endif %}
