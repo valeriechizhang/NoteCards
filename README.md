@@ -11,7 +11,7 @@ Flask, SQLAlchemy, Google API, Facebook API
   https://github.com/valeriechizhang/Tournament/blob/master/Vagrantfile <br>
   https://github.com/valeriechizhang/Tournament/blob/master/pg_config.sh <br>
 
-<b>Start the Virtual Machine
+<b>Start the Virtual Machine</b><br>
 3. Clone the NoteCards project inside of the same direcotry <br>
 4. Use the command "vagrant ssh" in the direcory to start off the vm <br>
 
