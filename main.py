@@ -34,12 +34,12 @@ def showNotebooks():
 
 @app.route('/notebook/new', methods=['GET', 'POST'])
 def newNotebook():
-    if 'email' not in login_session:
+    if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
         name = request.form['notebook_name']
         description = request.form['notebook_description']
-        newbook = Notebook(name = name, description = description)
+        newbook = Notebook(name = name, description = description, user_id = login_session['user_id'])
         if name == '':
             error = 'The notebook\'s name should not be empty.'
             return render_template('newbook.html', error = error)
@@ -52,7 +52,7 @@ def newNotebook():
 
 @app.route('/notebook/<int:notebook_id>/edit', methods=['GET', 'POST'])
 def editNotebook(notebook_id):
-    if 'email' not in login_session:
+    if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
     if request.method == 'POST':
@@ -72,7 +72,7 @@ def editNotebook(notebook_id):
 
 @app.route('/notebook/<int:notebook_id>/delete', methods=['GET', 'POST'])
 def deleteNotebook(notebook_id):
-    if 'email' not in login_session:
+    if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
     if request.method == 'POST':
