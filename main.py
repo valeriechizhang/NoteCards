@@ -1,16 +1,21 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+import random
+import string
+import httplib2
+import json
+import requests
+
+from flask import Flask, render_template
+from flask import request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Notebook, Card
 from flask import session as login_session
-import random
-import string
+
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
-import httplib2
-import json
+
 from flask import make_response
-import requests
+
 
 app = Flask(__name__)
 
@@ -31,7 +36,8 @@ CLIENT_ID = json.loads(
 @app.route('/notebook')
 def showNotebooks():
     notebooks = session.query(Notebook).all()
-    return render_template('allbooks.html', notebooks = notebooks)
+    return render_template('allbooks.html', notebooks=notebooks)
+
 
 @app.route('/notebook/new', methods=['GET', 'POST'])
 def newNotebook():
@@ -40,17 +46,18 @@ def newNotebook():
     if request.method == 'POST':
         name = request.form['notebook_name']
         description = request.form['notebook_description']
-        newbook = Notebook(name = name, description = description, user_id = login_session['user_id'])
+        newbook = Notebook(name=name, description=description, user_id=login_session['user_id'])
         # validate if the name section is filled
         if name == '':
             error = 'The notebook\'s name should not be empty.'
-            return render_template('newbook.html', error = error)
+            return render_template('newbook.html', error=error)
         session.add(newbook)
         session.commit()
         flash('New Notebook [%s] Successfully Created' % name)
         return redirect(url_for('showNotebooks'))
     else:
         return render_template('newbook.html')
+
 
 @app.route('/notebook/<int:notebook_id>/edit', methods=['GET', 'POST'])
 def editNotebook(notebook_id):
@@ -66,7 +73,7 @@ def editNotebook(notebook_id):
         # validate if the name section is filled, and send out error message if it's empty
         if name == '':
             error = 'The notebook\'s name should not be empty.'
-            return render_template('editbook.html', notebook=notebook, error = error)
+            return render_template('editbook.html', notebook=notebook, error=error)
         notebook.name = name
         notebook.description = description
         session.add(notebook)
@@ -75,6 +82,7 @@ def editNotebook(notebook_id):
         return redirect(url_for('showNotebooks'))
     else:
         return render_template('editbook.html', notebook=notebook)
+
 
 @app.route('/notebook/<int:notebook_id>/delete', methods=['GET', 'POST'])
 def deleteNotebook(notebook_id):
@@ -98,12 +106,14 @@ def deleteNotebook(notebook_id):
     else:
         return render_template('deletebook.html', notebook=notebook)
 
+
 @app.route('/notebook/<int:notebook_id>')
 @app.route('/notebook/<int:notebook_id>/card')
 def showCards(notebook_id):
     cards = session.query(Card).filter_by(notebook_id=notebook_id).all()
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
     return render_template("cards.html", cards=cards, notebook=notebook)
+
 
 @app.route('/notebook/<int:notebook_id>/card/new', methods=['GET', 'POST'])
 def newCard(notebook_id):
@@ -120,8 +130,8 @@ def newCard(notebook_id):
         # validate the form input and send out error message
         if term == '':
             error = 'The card\'s term should not be empty.'
-            return render_template('newcard.html', notebook_id=notebook_id, error = error)
-        newcard = Card(term = term, tag = tag, description = description, notebook_id = notebook_id)
+            return render_template('newcard.html', notebook_id=notebook_id, error=error)
+        newcard = Card(term=term, tag=tag, description=description, notebook_id=notebook_id)
         session.add(newcard)
         session.commit()
         flash('New Card [%s] Successfully Created' % term)
@@ -138,7 +148,7 @@ def editCard(notebook_id, card_id):
     # only the owner of the notebook can edit cards
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
-    card = session.query(Card).filter_by(id = card_id).one()
+    card = session.query(Card).filter_by(id=card_id).one()
     if request.method == 'POST':
         term = request.form['card_term']
         tag = request.form['card_tag']
@@ -146,7 +156,7 @@ def editCard(notebook_id, card_id):
         # form validation and error message
         if term == '':
             error = 'The card\'s term should not be empty.'
-            return render_template('editcard.html', card=card, notebook_id=notebook_id, error = error)
+            return render_template('editcard.html', card=card, notebook_id=notebook_id, error=error)
         card.term = term
         card.tag = tag
         card.description = description
@@ -166,7 +176,7 @@ def deleteCard(notebook_id, card_id):
     # only the notebooke owner can delete cards inside
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
-    card = session.query(Card).filter_by(id = card_id).one()
+    card = session.query(Card).filter_by(id=card_id).one()
     if request.method == 'POST':
         session.delete(card)
         session.commit()
@@ -175,21 +185,25 @@ def deleteCard(notebook_id, card_id):
     else:
         return render_template('deletecard.html', card=card, notebook_id=notebook_id)
 
+
 # JSON API endpoints
 @app.route('/notebook/JSON')
 def notebookJSON():
     notebooks = session.query(Notebook).all()
     return jsonify(notebooks=[n.serialize for n in notebooks])
 
+
 @app.route('/notebook/<int:notebook_id>/card/JSON')
 def notebookCardJSON(notebook_id):
     cards = session.query(Card).filter_by(notebook_id=notebook_id).all()
     return jsonify(cards=[c.serialize for c in cards])
 
+
 @app.route('/notebook/card/<int:card_id>/JSON')
 def cardJSON(card_id):
     card = session.query(Card).filter_by(id=card_id).one()
     return jsonify(card=card.serialize)
+
 
 # User login helper functions
 def createUser(login_session):
@@ -199,9 +213,11 @@ def createUser(login_session):
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 
+
 def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
+
 
 def getUserID(email):
     try:
@@ -210,6 +226,7 @@ def getUserID(email):
     except:
         return None
 
+
 # Login/logout pages
 @app.route('/login')
 def showLogin():
@@ -217,6 +234,7 @@ def showLogin():
                     for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
+
 
 # Disconnect based on provider
 @app.route('/disconnect')
@@ -238,6 +256,7 @@ def disconnect():
     else:
         flash("You were not logged in")
         return redirect(url_for('showNotebooks'))
+
 
 # Google login/disconnect methods
 @app.route('/gconnect', methods=['POST'])
@@ -320,6 +339,7 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['email'])
     return 'Login with %s' % login_session['email']
 
+
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session['access_token']
@@ -339,6 +359,7 @@ def gdisconnect():
             json.dumps('Failed to revoke token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 # Facebook login/logout methods
 @app.route('/fbconnect', methods=['POST'])
@@ -361,7 +382,6 @@ def fbconnect():
     userinfo_url = "https://graph.facebook.com/v2.4/me"
     # strip expire tag from access token
     token = result.split("&")[0]
-
 
     url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
@@ -395,16 +415,20 @@ def fbconnect():
     flash("Now logged in as %s" % login_session['username'])
     return 'Login with %s' % login_session['email']
 
+
 @app.route('/fbdisconnect')
 def fbdisconnect():
     facebook_id = login_session['facebook_id']
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "You have been logged out."
+
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
+
+

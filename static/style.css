@@ -57,7 +57,7 @@ a:hover {
     font-size: 15px;
 }
 
-.log > a:hover {
+.log:hover > a {
     color: #455757;
 }
 
@@ -73,14 +73,14 @@ a:hover {
     font-family: 'Yesteryear', cursive;
 }
 
-.banner-logo {
+.banner-logo > a {
     margin-top: 30px;
     font-size: 80px;
     font-weight: 30;
     color: #60C3C2;
 }
 
-.banner-logo:hover {
+.banner-logo:hover > a {
     color: #60C3C2;
 }
 
@@ -91,12 +91,12 @@ a:hover {
     color: #455757;
 }
 
-.create > a{
+.create > a {
     font-weight: bold;
     color: #00838F;
 }
 
-.create > a:hover {
+.create:hover > a {
     color: #0277BD;
 }
 
@@ -124,7 +124,7 @@ a:hover {
     color: #60C3C2;
 }
 
-.notebook-name > a:hover {
+.notebook-name:hover > a {
     color: #015249;
 }
 
