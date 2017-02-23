@@ -3,9 +3,11 @@
 
 {% include "header.html" %}
 
+{% if session['email'] %}
 <div class='row text-center'>
     <a class='create' href='{{url_for('newCard', notebook_id = notebook_id)}}'>Create a New Notecard</a>
 </div>
+{% endif %}
 
 <div class='card-list text-center'>
 

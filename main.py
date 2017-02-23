@@ -34,6 +34,8 @@ def showNotebooks():
 
 @app.route('/notebook/new', methods=['GET', 'POST'])
 def newNotebook():
+    if 'email' not in login_session:
+        return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
         name = request.form['notebook_name']
         description = request.form['notebook_description']
@@ -50,6 +52,8 @@ def newNotebook():
 
 @app.route('/notebook/<int:notebook_id>/edit', methods=['GET', 'POST'])
 def editNotebook(notebook_id):
+    if 'email' not in login_session:
+        return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
     if request.method == 'POST':
         name = request.form['notebook_name']
@@ -68,6 +72,8 @@ def editNotebook(notebook_id):
 
 @app.route('/notebook/<int:notebook_id>/delete', methods=['GET', 'POST'])
 def deleteNotebook(notebook_id):
+    if 'email' not in login_session:
+        return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
     if request.method == 'POST':
         # first delete all the cards in this book
@@ -91,6 +97,8 @@ def showCards(notebook_id):
 
 @app.route('/notebook/<int:notebook_id>/card/new', methods=['GET', 'POST'])
 def newCard(notebook_id):
+    if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
     if request.method == 'POST':
         term = request.form['card_term']
         tag = request.form['card_tag']
@@ -109,6 +117,8 @@ def newCard(notebook_id):
 
 @app.route('/notebook/<int:notebook_id>/card/<int:card_id>/edit', methods=['GET', 'POST'])
 def editCard(notebook_id, card_id):
+    if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
     if request.method == 'POST':
         term = request.form['card_term']
@@ -130,6 +140,8 @@ def editCard(notebook_id, card_id):
 
 @app.route('/notebook/<int:notebook_id>/card/<int:card_id>/delete', methods=['GET', 'POST'])
 def deleteCard(notebook_id, card_id):
+    if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
     if request.method == 'POST':
         session.delete(card)
