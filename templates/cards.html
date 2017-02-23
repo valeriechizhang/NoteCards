@@ -3,9 +3,13 @@
 
 {% include "header.html" %}
 
-{% if session['email'] %}
+<div class="row notebook-title text-center">
+    <h3>{{notebook.name}}</h3>
+</div>
+
+{% if notebook.user_id == session['user_id'] %}
 <div class='row text-center'>
-    <a class='create' href='{{url_for('newCard', notebook_id = notebook_id)}}'>Create a New Notecard</a>
+    <a class='create' href='{{url_for('newCard', notebook_id = notebook.id)}}'>Create a New Notecard</a>
 </div>
 {% endif %}
 
@@ -18,6 +22,7 @@
         <div class='card-tag'>{{c.tag}}</div>
         <div class='card-description'>{{c.description}}</div>
 
+        {% if notebook.user_id == session['user_id'] %}
         <div>
             <a class='edit' href='{{url_for('editCard', notebook_id = c.notebook_id, card_id = c.id)}}'>Edit</a>
         </div>
@@ -25,6 +30,8 @@
         <div>
             <a class='delete' href='{{url_for('deleteCard', notebook_id = c.notebook_id, card_id = c.id)}}'>Delete</a>
         </div>
+        {% endif %}
+
 
     </div>
 </div>

@@ -97,11 +97,15 @@ def deleteNotebook(notebook_id):
 @app.route('/notebook/<int:notebook_id>/card')
 def showCards(notebook_id):
     cards = session.query(Card).filter_by(notebook_id=notebook_id).all()
-    return render_template("cards.html", cards=cards, notebook_id=notebook_id)
+    notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    return render_template("cards.html", cards=cards, notebook=notebook)
 
 @app.route('/notebook/<int:notebook_id>/card/new', methods=['GET', 'POST'])
 def newCard(notebook_id):
     if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
+    notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     if request.method == 'POST':
         term = request.form['card_term']
@@ -122,6 +126,9 @@ def newCard(notebook_id):
 @app.route('/notebook/<int:notebook_id>/card/<int:card_id>/edit', methods=['GET', 'POST'])
 def editCard(notebook_id, card_id):
     if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
+    notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
     if request.method == 'POST':
@@ -145,6 +152,9 @@ def editCard(notebook_id, card_id):
 @app.route('/notebook/<int:notebook_id>/card/<int:card_id>/delete', methods=['GET', 'POST'])
 def deleteCard(notebook_id, card_id):
     if 'email' not in login_session:
+        return redirect(url_for('showCards', notebook_id=notebook_id))
+    notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
     if request.method == 'POST':
