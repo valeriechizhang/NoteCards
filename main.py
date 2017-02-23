@@ -21,6 +21,7 @@ Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# Load client_secrets.json file for Google login
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
@@ -40,6 +41,7 @@ def newNotebook():
         name = request.form['notebook_name']
         description = request.form['notebook_description']
         newbook = Notebook(name = name, description = description, user_id = login_session['user_id'])
+        # validate if the name section is filled
         if name == '':
             error = 'The notebook\'s name should not be empty.'
             return render_template('newbook.html', error = error)
@@ -55,11 +57,13 @@ def editNotebook(notebook_id):
     if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    # only allow the owner to edit the notebook
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
         name = request.form['notebook_name']
         description = request.form['notebook_description']
+        # validate if the name section is filled, and send out error message if it's empty
         if name == '':
             error = 'The notebook\'s name should not be empty.'
             return render_template('editbook.html', notebook=notebook, error = error)
@@ -77,6 +81,7 @@ def deleteNotebook(notebook_id):
     if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    # only the owner can delete the notebook
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
@@ -105,12 +110,14 @@ def newCard(notebook_id):
     if 'email' not in login_session:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    # only the notebook owner can create a new card inside
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     if request.method == 'POST':
         term = request.form['card_term']
         tag = request.form['card_tag']
         description = request.form['card_description']
+        # validate the form input and send out error message
         if term == '':
             error = 'The card\'s term should not be empty.'
             return render_template('newcard.html', notebook_id=notebook_id, error = error)
@@ -128,6 +135,7 @@ def editCard(notebook_id, card_id):
     if 'email' not in login_session:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    # only the owner of the notebook can edit cards
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
@@ -135,6 +143,7 @@ def editCard(notebook_id, card_id):
         term = request.form['card_term']
         tag = request.form['card_tag']
         description = request.form['card_description']
+        # form validation and error message
         if term == '':
             error = 'The card\'s term should not be empty.'
             return render_template('editcard.html', card=card, notebook_id=notebook_id, error = error)
@@ -154,6 +163,7 @@ def deleteCard(notebook_id, card_id):
     if 'email' not in login_session:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    # only the notebooke owner can delete cards inside
     if notebook.user_id != login_session['user_id']:
         return redirect(url_for('showCards', notebook_id=notebook_id))
     card = session.query(Card).filter_by(id = card_id).one()
@@ -181,9 +191,7 @@ def cardJSON(card_id):
     card = session.query(Card).filter_by(id=card_id).one()
     return jsonify(card=card.serialize)
 
-# User login functions
-
-# User helper functions
+# User login helper functions
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session['email'])
     session.add(newUser)
@@ -210,7 +218,6 @@ def showLogin():
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
-
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
@@ -231,7 +238,6 @@ def disconnect():
     else:
         flash("You were not logged in")
         return redirect(url_for('showNotebooks'))
-
 
 # Google login/disconnect methods
 @app.route('/gconnect', methods=['POST'])
@@ -392,12 +398,11 @@ def fbconnect():
 @app.route('/fbdisconnect')
 def fbdisconnect():
     facebook_id = login_session['facebook_id']
-    # The access token must me included to successfully logout
     access_token = login_session['access_token']
     url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
-    return "you have been logged out"
+    return "You have been logged out."
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
