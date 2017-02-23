@@ -18,7 +18,7 @@
     {% if not session['email'] %}
         <a href='{{url_for('showLogin')}}'>login</a>
     {% else %}
-        <a href='#'>Logout</a>
+        <a href='{{url_for('disconnect')}}'>Logout</a>
     {% endif %}
     </div>
 
