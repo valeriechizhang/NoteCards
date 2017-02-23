@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='message'>Create a New Notecard</div>
+
+<form action='{{url_for('newCard', notebook_id = notebook_id)}}' method='POST'>
+    <div class='label'>Name</div><br>
+    <input type='text' size='30' name='card_term'>
+    <br>
+    <div class='label'>Tag</div><br>
+    <input type='text' size='30' name='card_tag'>
+    <br>
+    <div class='label'>Description</div>
+    <div><textarea name='card_description'></textarea></div>
+    <br>
+    <div class='error'>{{error}}<br></div>
+    <input class='button' type='submit' value='Create'>
+</form>
+
+
+
+<div class='cancel'>
+    <a href='{{url_for('showCards', notebook_id = notebook_id)}}'>Cancel</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='row text-center'>
+    <a class='create' href='{{url_for('newCard', notebook_id = notebook_id)}}'>Create a New Notecard</a>
+</div>
+
+<div class='card-list text-center'>
+
+{% for c in cards %}
+<div class='row card'>
+    <div class='col-md-12'>
+        <div class='card-term'>{{c.term}}</div>
+        <div class='card-tag'>{{c.tag}}</div>
+        <div class='card-description'>{{c.description}}</div>
+
+        <div>
+            <a class='edit' href='{{url_for('editCard', notebook_id = c.notebook_id, card_id = c.id)}}'>Edit</a>
+        </div>
+
+        <div>
+            <a class='delete' href='{{url_for('deleteCard', notebook_id = c.notebook_id, card_id = c.id)}}'>Delete</a>
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

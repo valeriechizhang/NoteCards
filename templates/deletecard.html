@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='message'>Delete Card [{{card.term}}]</div>
+
+<form action='{{url_for('deleteCard', notebook_id=notebook_id, card_id=card.id)}}' method='POST'>
+    <div class='warning'>Are you sure you want to delete this card?</div>
+    <input class='button' type='submit' value='Delete'>
+</form>
+
+<div class='cancel'>
+    <a href='{{url_for('showCards', notebook_id=notebook_id)}}'>Cancel</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='message'>Edit Notebook [{{notebook.name}}]</div>
+
+<form action='{{url_for('editNotebook', notebook_id = notebook.id)}}' method='POST'>
+    <div class='label'>Name</div><br>
+    <input type='text' size='30' name='notebook_name' value='{{notebook.name}}'>
+    <br>
+    <div class='label'>Description</div>
+    <div><textarea name='notebook_description'>{{notebook.description}}</textarea></div>
+    <br>
+    <div class='error'>{{error}}<br></div>
+    <input class='button' type='submit' value='Edit'>
+</form>
+
+<div class='cancel'>
+    <a href='{{url_for('showNotebooks')}}'>Cancel</a>
+</div>
+
+{% endblock %}

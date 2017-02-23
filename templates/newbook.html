@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='message'>Create a New Notebook</div>
+
+<form action='{{url_for('newNotebook')}}' method='POST'>
+    <div class='label'>Name</div><br>
+    <input type='text' size='30' name='notebook_name'>
+    <br>
+    <div class='label'>Description</div>
+    <div><textarea name='notebook_description'></textarea></div>
+    <br>
+    <div class='error'>{{error}}<br></div>
+    <input class='button' type='submit' value='Create'>
+</form>
+
+
+<div class='cancel'>
+    <a href='{{url_for('showNotebooks')}}'>Cancel</a>
+</div>
+
+{% endblock %}

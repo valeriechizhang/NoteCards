@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% include "header.html" %}
+
+<div class='row text-center'>
+    <a class='create' href='{{url_for('newNotebook')}}'>Create a New Notebook</a>
+</div>
+
+<div class='notebook-list text-center'>
+{% for n in notebooks %}
+    <div class='row notebook'>
+        <div class='col-md-12'>
+            <div>
+                <a class='notebook-name' href='{{url_for('showCards', notebook_id = n.id)}}'>{{n.name}}</a>
+            </div>
+            <div>{{n.description}}</div>
+            <div>
+                <a class='edit' href='{{url_for('editNotebook', notebook_id = n.id)}}'>Edit</a>
+            </div>
+            <div>
+                <a class='delete' href='{{url_for('deleteNotebook', notebook_id = n.id)}}'>Delete</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
