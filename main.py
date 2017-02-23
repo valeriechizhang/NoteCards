@@ -268,7 +268,7 @@ def gconnect():
 
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
-    return 'soething'
+    return 'Login with %s' % login_session['email']
 
 @app.route('/gdisconnect')
 def gdisconnect():
