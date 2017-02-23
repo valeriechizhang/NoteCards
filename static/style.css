@@ -25,13 +25,13 @@ textarea {
 
 
 a {
-    color: #b4957c;
+    color: #8B9E9B;
 }
 
 a:hover {
-    color: #fec821;
-    text-decoration: none;
+    color: #455757;
 }
+
 
 @media screen and (min-width: 1000px) {
     body {
@@ -39,7 +39,6 @@ a:hover {
         margin: auto;
     }
 }
-
 
 .header {
     margin-bottom: 10px;
@@ -65,7 +64,7 @@ a:hover {
 .flash {
     margin-top: 20px;
     margin-bottom: 20px;
-    color: #FFF59D;
+    color: #FFD600;
 }
 
 .banner {
@@ -74,14 +73,14 @@ a:hover {
     font-family: 'Yesteryear', cursive;
 }
 
-.banner-logo > a {
+.banner-logo {
     margin-top: 30px;
     font-size: 80px;
     font-weight: 30;
     color: #60C3C2;
 }
 
-.banner-logo > a:hover {
+.banner-logo:hover {
     color: #60C3C2;
 }
 
@@ -92,7 +91,17 @@ a:hover {
     color: #455757;
 }
 
+.create > a{
+    font-weight: bold;
+    color: #00838F;
+}
+
+.create > a:hover {
+    color: #0277BD;
+}
+
 .notebook {
+    min-width: 80%;
     background-color: #E4F2F5;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -109,13 +118,13 @@ a:hover {
     color: #FFFFFF;
 }
 
-.notebook-name {
+.notebook-name > a {
     font-size: 20px;
     font-weight: bold;
     color: #60C3C2;
 }
 
-.notebook-name:hover {
+.notebook-name > a:hover {
     color: #015249;
 }
 
@@ -146,6 +155,8 @@ a:hover {
     font-size: 10px;
     margin-bottom: 10px;
 }
+
+
 
 .warning {
     color: #FF3333;

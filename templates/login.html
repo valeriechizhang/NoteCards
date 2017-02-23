@@ -4,7 +4,9 @@
 {% include "header.html" %}
 
 <!-- html elements for the page -->
-<div id="signInButton">
+<div class='login-buttons text-center'>
+    <h5>Make a sign-in selection:</h5>
+    <div id="signInButton">
         <span class="g-signin"
             data-scope="openid email"
             data-clientid="875864557116-10c5lmsbiodtq9mcifpmhrvgpfonu2c1.apps.googleusercontent.com"
@@ -14,16 +16,18 @@
             data-callback="signInCallback"
             data-approvalprompt="force">
         </span>
-</div>
+    </div>
 
 
-<button>
-    <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-        <a href='javascript:sendTokenToServer()'>Facebook</a>
-    </fb:login-button>
-</button>
-
+    <button>
+        <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+            <a href='javascript:sendTokenToServer()'>Sign in with Facebook</a>
+        </fb:login-button>
+    </button>
+<br>
 <div id='login-result'><div>
+
+</div>
 
 <!-- scripts and other functions -->
 

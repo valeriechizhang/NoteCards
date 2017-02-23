@@ -218,7 +218,7 @@ def disconnect():
         if login_session['provider'] == 'google':
             gdisconnect()
             del login_session['gplus_id']
-            del login_session['credentials']
+            del login_session['access_token']
         if login_session['provider'] == 'facebook':
             fbdisconnect()
             del login_session['facebook_id']
@@ -311,8 +311,7 @@ def gconnect():
     print login_session['user_id']
     print login_session['username']
 
-    flash("you are now logged in as %s" % login_session['username'])
-    print "done!"
+    flash("you are now logged in as %s" % login_session['email'])
     return 'Login with %s' % login_session['email']
 
 @app.route('/gdisconnect')
@@ -387,13 +386,8 @@ def fbconnect():
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-
     flash("Now logged in as %s" % login_session['username'])
-    return output
+    return 'Login with %s' % login_session['email']
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
