@@ -42,13 +42,30 @@ a:hover {
 
 
 .header {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+}
+
+.greeting {
+    color: #f7d5c6;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.log > a {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #8B9E9B;
+    font-size: 15px;
+}
+
+.log > a:hover {
+    color: #455757;
 }
 
 .flash {
     margin-top: 20px;
     margin-bottom: 20px;
-    color: #FFD700;
+    color: #FFF59D;
 }
 
 .banner {
@@ -61,37 +78,49 @@ a:hover {
     margin-top: 30px;
     font-size: 80px;
     font-weight: 30;
-    color: #77C9D4;
+    color: #60C3C2;
 }
 
 .banner-logo > a:hover {
-    color: #77C9D4;
+    color: #60C3C2;
 }
 
 .message {
     text-align: center;
     font-size: 20px;
     margin-bottom: 10px;
+    color: #455757;
 }
 
 .notebook {
-    background-color: #FFFFFF;
-    border-style: solid;
-    border-color: #57BC90;
-    border-width: 3;
-    border-radius: 1px;
+    background-color: #E4F2F5;
     margin-top: 5px;
     margin-bottom: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.notebook:hover {
+    background-color: #B0DBDD;
+    color: #FFFFFF;
 }
 
 .notebook-name {
     font-size: 20px;
     font-weight: bold;
+    color: #60C3C2;
+}
+
+.notebook-name:hover {
     color: #015249;
+}
+
+.notebook-title {
+    color: #455757;
 }
 
 .card-list {
@@ -100,15 +129,22 @@ a:hover {
 }
 
 .card {
-    background-color: #E9E9E9;
-    border-style: solid;
-    border-color: #99D3DF;
-    border-width: 3;
-    border-radius: 1px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    background-color: #E4F2F5;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.card-term {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card-tag {
+    font-size: 10px;
+    margin-bottom: 10px;
 }
 
 .warning {
