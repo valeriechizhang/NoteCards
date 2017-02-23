@@ -1,15 +1,23 @@
-<div class='row header'>
-    <div class='row banner text-center'>
+<div class='row header text-center'>
+    <div class='row banner'>
         <div class='col-md-12 banner-logo'>
             <a href='/'>NoteCard</a>
         </div>
     </div>
 
-    <div class='row text-center'>
-        Login  |  Logout
+    <div class='greeting'>
+        You are now logged in as <b>{{session['username']}}</b>
     </div>
 
-    <div class='flash text-center'>
+    <div class='row log'>
+    {% if session['username'] == None %}
+        <a href='{{url_for('login')}}'>login</a>
+    {% else %}
+        <a href='#'>Logout</a>
+    {% endif %}
+    </div>
+
+    <div class='flash'>
         {% with messages = get_flashed_messages()%}
             {% if messages %}
                 {% for message in messages %}
