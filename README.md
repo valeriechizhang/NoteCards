@@ -8,9 +8,10 @@ Flask, SQLAlchemy, Google API, Facebook API
 <b>Initialize Vagrant VM </b> <br>
 1. Install Vagrant: http://vagrantup.com/ and VirtualBox: https://www.virtualbox.org/ <br>
 2. Create a new directory can clone the two files inside:<br>
-https://github.com/valeriechizhang/Tournament/blob/master/Vagrantfile <br>
-https://github.com/valeriechizhang/Tournament/blob/master/pg_config.sh <br>
+  https://github.com/valeriechizhang/Tournament/blob/master/Vagrantfile <br>
+  https://github.com/valeriechizhang/Tournament/blob/master/pg_config.sh <br>
 
+<b>Start the Virtual Machine
 3. Clone the NoteCards project inside of the same direcotry <br>
 4. Use the command "vagrant ssh" in the direcory to start off the vm <br>
 
