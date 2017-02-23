@@ -55,6 +55,8 @@ def editNotebook(notebook_id):
     if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    if notebook.user_id != login_session['user_id']:
+        return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
         name = request.form['notebook_name']
         description = request.form['notebook_description']
@@ -75,6 +77,8 @@ def deleteNotebook(notebook_id):
     if 'user_id' not in login_session:
         return redirect(url_for('showNotebooks'))
     notebook = session.query(Notebook).filter_by(id=notebook_id).one()
+    if notebook.user_id != login_session['user_id']:
+        return redirect(url_for('showNotebooks'))
     if request.method == 'POST':
         # first delete all the cards in this book
         cards = session.query(Card).filter_by(notebook_id=notebook_id).all()

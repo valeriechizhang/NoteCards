@@ -17,12 +17,15 @@
                 <a class='notebook-name' href='{{url_for('showCards', notebook_id = n.id)}}'>{{n.name}}</a>
             </div>
             <div>{{n.description}}</div>
+
+            {% if session['user_id'] == n.user_id %}
             <div>
                 <a class='edit' href='{{url_for('editNotebook', notebook_id = n.id)}}'>Edit</a>
             </div>
             <div>
                 <a class='delete' href='{{url_for('deleteNotebook', notebook_id = n.id)}}'>Delete</a>
             </div>
+            {% endif %}
         </div>
     </div>
 {% endfor %}
